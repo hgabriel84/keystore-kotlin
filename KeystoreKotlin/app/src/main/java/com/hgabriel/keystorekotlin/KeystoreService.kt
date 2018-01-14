@@ -6,6 +6,7 @@ import android.os.Build
 import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Base64
 import java.io.ByteArrayOutputStream
 import java.math.BigInteger
 import java.security.KeyPairGenerator
@@ -74,7 +75,7 @@ class KeyStoreService(private val context: Context, private val keyStoreAlias: S
         val cipher = getInstance(RSA_CIPHER)
         cipher.init(ENCRYPT_MODE, encryptKey)
 
-        val message = plainStr.toByteArray(Charsets.ISO_8859_1)
+        val message = Base64.decode(plainStr, Base64.DEFAULT)
         val baos = ByteArrayOutputStream()
 
         var limit = KEY_LENGTH / 8 - 11
@@ -86,7 +87,7 @@ class KeyStoreService(private val context: Context, private val keyStoreAlias: S
             position += limit
         }
 
-        return String(baos.toByteArray(), Charsets.ISO_8859_1)
+        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
     }
 
     fun decryptData(encryptedStr: String): String {
@@ -95,7 +96,7 @@ class KeyStoreService(private val context: Context, private val keyStoreAlias: S
         val cipher = getInstance(RSA_CIPHER)
         cipher.init(DECRYPT_MODE, decryptKey)
 
-        val encryptedMessage = encryptedStr.toByteArray(Charsets.ISO_8859_1)
+        val encryptedMessage = Base64.decode(encryptedStr, Base64.DEFAULT)
         val baos = ByteArrayOutputStream()
 
         var limit = KEY_LENGTH / 8
@@ -108,6 +109,6 @@ class KeyStoreService(private val context: Context, private val keyStoreAlias: S
             position += limit
         }
 
-        return String(baos.toByteArray(), Charsets.ISO_8859_1)
+        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
     }
 }
