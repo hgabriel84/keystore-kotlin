@@ -7,7 +7,6 @@ import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
-import java.io.ByteArrayOutputStream
 import java.math.BigInteger
 import java.security.KeyPairGenerator
 import java.security.KeyStore
@@ -27,7 +26,6 @@ class KeyStoreService(private val context: Context, private val keyStoreAlias: S
 
     private val KEYSTORE_PROVIDER = "AndroidKeyStore"
     private val RSA_CIPHER = "RSA/ECB/PKCS1Padding"
-    private val KEY_LENGTH = 2048
 
     init {
         keyStore = KeyStore.getInstance(KEYSTORE_PROVIDER)
@@ -79,27 +77,6 @@ class KeyStoreService(private val context: Context, private val keyStoreAlias: S
         return Base64.encodeToString(result, Base64.DEFAULT)
     }
 
-    fun perfomRSAEncryption(plainStr: String): String {
-        val encryptKey = keyStore.getCertificate(keyStoreAlias).publicKey
-
-        val cipher = getInstance(RSA_CIPHER)
-        cipher.init(ENCRYPT_MODE, encryptKey)
-
-        var limit = KEY_LENGTH / 8 - 11
-        var position = 0
-        val message = Base64.decode(plainStr, Base64.DEFAULT)
-        val baos = ByteArrayOutputStream()
-        while (position < message.size) {
-            if (message.size - position < limit)
-                limit = message.size - position
-            val result = cipher.doFinal(message, position, limit)
-            baos.write(result)
-            position += limit
-        }
-
-        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
-    }
-
     fun decryptData(encryptedStr: String): String {
         val decryptKey = keyStore.getKey(keyStoreAlias, null) as PrivateKey
 
@@ -108,27 +85,5 @@ class KeyStoreService(private val context: Context, private val keyStoreAlias: S
         val result = cipher.doFinal(Base64.decode(encryptedStr, Base64.DEFAULT))
 
         return String(result)
-    }
-
-    fun perfomRSADecryption(encryptedStr: String): String {
-        val decryptKey = keyStore.getKey(keyStoreAlias, null) as PrivateKey
-
-        val cipher = getInstance(RSA_CIPHER)
-        cipher.init(DECRYPT_MODE, decryptKey)
-
-        var limit = KEY_LENGTH / 8
-        var position = 0
-        val baos = ByteArrayOutputStream()
-        val encryptedMessage = Base64.decode(encryptedStr, Base64.DEFAULT)
-
-        while (position < encryptedMessage.size) {
-            if (encryptedMessage.size - position < limit)
-                limit = encryptedMessage.size - position
-            val result = cipher.doFinal(encryptedMessage, position, limit)
-            baos.write(result)
-            position += limit
-        }
-
-        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
     }
 }

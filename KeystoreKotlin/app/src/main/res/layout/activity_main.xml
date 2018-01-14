@@ -50,25 +50,6 @@
             app:layout_constraintTop_toBottomOf="@id/encrypt_button" />
 
         <Button
-            android:id="@+id/encrypt_bulk_button"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:text="ENCRYPT BULK TEXT"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/encrypted_text" />
-
-        <TextView
-            android:id="@+id/encrypted_bulk_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/encrypt_bulk_button" />
-
-        <Button
             android:id="@+id/decrypt_button"
             android:layout_width="0dp"
             android:layout_height="40dp"
@@ -76,7 +57,7 @@
             android:text="DECRYPT TEXT"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/encrypted_bulk_text" />
+            app:layout_constraintTop_toBottomOf="@id/encrypted_text" />
 
         <TextView
             android:id="@+id/decrypted_text"
@@ -86,25 +67,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/decrypt_button" />
-
-        <Button
-            android:id="@+id/decrypt_bulk_button"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:text="DECRYPT BULK TEXT"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/decrypted_text" />
-
-        <TextView
-            android:id="@+id/decrypted_bulk_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/decrypt_bulk_button" />
 
     </android.support.constraint.ConstraintLayout>
 
